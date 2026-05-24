@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="vidssave">
+  <rect width="1200" height="630" fill="#202126"/>
+  <circle cx="600" cy="80" r="280" fill="#ff3232" opacity="0.14"/>
+  <rect x="96" y="96" width="1008" height="438" rx="28" fill="#101116" opacity="0.82"/>
+  <rect x="142" y="142" width="110" height="110" rx="24" fill="#ffdc8e"/>
+  <path d="M184 174v46l38-23-38-23Z" fill="#111216"/>
+  <text x="282" y="184" fill="#ffffff" font-family="Arial, sans-serif" font-size="76" font-weight="800">vidssave</text>
+  <text x="282" y="242" fill="#ffffff" font-family="Arial, sans-serif" font-size="38" font-weight="700">Free YouTube video and playlist downloader</text>
+  <text x="142" y="330" fill="#ffdc8e" font-family="Arial, sans-serif" font-size="42" font-weight="700">YouTube to MP4, audio formats, and HD quality options</text>
+  <text x="142" y="400" fill="#d8d8df" font-family="Arial, sans-serif" font-size="30">Check details, compare formats, and open the full video utility.</text>
+  <rect x="142" y="454" width="310" height="72" rx="36" fill="#ffdc8e"/>
+  <text x="196" y="502" fill="#111216" font-family="Arial, sans-serif" font-size="30" font-weight="800">View Full Site</text>
+</svg>

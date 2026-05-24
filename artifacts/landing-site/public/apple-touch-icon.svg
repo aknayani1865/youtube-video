@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="vidssave">
+  <rect width="180" height="180" rx="40" fill="#202126"/>
+  <rect x="25" y="25" width="130" height="130" rx="30" fill="#ffdc8e"/>
+  <path d="M70 56v68l56-34-56-34Z" fill="#111216"/>
+</svg>

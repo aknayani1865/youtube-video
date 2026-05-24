@@ -1,0 +1,79 @@
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# build output
+dist/
+out/
+out-tsc/
+build/
+coverage/
+*.tsbuildinfo
+
+# dependencies and package-manager state
+node_modules/
+.pnpm-store/
+.yarn/
+package-lock.json
+yarn.lock
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# environment files
+server.env
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# logs and diagnostics
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+testem.log
+libpeerconnection.log
+
+# caches and temporary files
+.cache/
+**/.cache/
+.local/
+**/.local/
+.sass-cache/
+.vite/
+tmp/
+temp/
+*.tmp
+
+# local runtime binaries; install Linux binaries on EC2 instead
+tools/
+
+# generated runtime files
+connect.lock
+typings/
+.expo/
+.expo-shared/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Replit
+.replit.tmp/

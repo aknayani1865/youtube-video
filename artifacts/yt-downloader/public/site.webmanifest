@@ -1,0 +1,17 @@
+{
+  "name": "vidssave YouTube Downloader",
+  "short_name": "vidssave",
+  "description": "YouTube video downloader and playlist downloader for reviewing MP4, audio, merged, and ZIP options.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f1115",
+  "theme_color": "#16a34a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml"
+    }
+  ]
+}

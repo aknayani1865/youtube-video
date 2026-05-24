@@ -1,0 +1,21 @@
+{
+    "name":  "workspace",
+    "version":  "0.0.0",
+    "license":  "MIT",
+    "scripts":  {
+                    "preinstall":  "node -e \"const fs=require(\u0027fs\u0027); for (const f of [\u0027package-lock.json\u0027,\u0027yarn.lock\u0027]) fs.rmSync(f,{force:true}); if (!String(process.env.npm_config_user_agent||\u0027\u0027).startsWith(\u0027pnpm/\u0027)) { console.error(\u0027Use pnpm instead\u0027); process.exit(1); }\"",
+                    "build":  "pnpm run typecheck \u0026\u0026 pnpm -r --if-present run build",
+                    "typecheck:libs":  "tsc --build",
+                    "typecheck":  "pnpm run typecheck:libs \u0026\u0026 pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+                    "dev":  "pnpm -r --parallel --filter @workspace/api-server --filter @workspace/yt-downloader run dev",
+                    "dev:api":  "pnpm --filter @workspace/api-server run dev",
+                    "dev:web":  "pnpm --filter @workspace/yt-downloader run dev",
+                    "dev:landing":  "pnpm --filter @workspace/landing-site run dev",
+                    "dev:all":  "pnpm -r --parallel --filter @workspace/api-server --filter @workspace/yt-downloader --filter @workspace/landing-site run dev"
+                },
+    "private":  true,
+    "devDependencies":  {
+                            "prettier":  "^3.8.3",
+                            "typescript":  "~5.9.3"
+                        }
+}

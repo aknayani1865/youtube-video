@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 160" role="img" aria-label="vidssave">
+  <rect width="760" height="160" rx="32" fill="#111216"/>
+  <rect x="28" y="28" width="104" height="104" rx="24" fill="url(#g)"/>
+  <path d="M68 58v44l38-22-38-22Z" fill="#111216"/>
+  <text x="156" y="86" fill="#ffffff" font-family="Arial, sans-serif" font-size="58" font-weight="800">vidssave</text>
+  <text x="156" y="124" fill="#ffdc8e" font-family="Arial, sans-serif" font-size="25" font-weight="700">YouTube video and playlist downloader</text>
+  <defs>
+    <linearGradient id="g" x1="28" y1="28" x2="132" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff3232"/>
+      <stop offset="1" stop-color="#ffdc8e"/>
+    </linearGradient>
+  </defs>
+</svg>

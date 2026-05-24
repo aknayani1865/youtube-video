@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: YouTube Downloader API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: video
+    description: Video operations
+  - name: playlist
+    description: Playlist operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /video/info:
+    get:
+      operationId: getVideoInfo
+      tags: [video]
+      summary: Get video information
+      description: Returns title, thumbnail, duration and available quality formats for a YouTube URL
+      parameters:
+        - name: url
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Video information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoInfo"
+        "400":
+          description: Invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /playlist/info:
+    get:
+      operationId: getPlaylistInfo
+      tags: [playlist]
+      summary: Get playlist information
+      description: Returns playlist title and list of videos using flat extraction (fast)
+      parameters:
+        - name: url
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Playlist information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaylistInfo"
+        "400":
+          description: Invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    VideoFormat:
+      type: object
+      properties:
+        itag:
+          type: string
+        quality:
+          type: string
+        qualityLabel:
+          type: string
+        mimeType:
+          type: string
+        hasAudio:
+          type: boolean
+        hasVideo:
+          type: boolean
+        container:
+          type: string
+        filesize:
+          type: ["integer", "null"]
+      required:
+        - itag
+        - quality
+        - qualityLabel
+        - mimeType
+        - hasAudio
+        - hasVideo
+        - container
+    VideoInfo:
+      type: object
+      properties:
+        videoId:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        thumbnailUrl:
+          type: string
+        durationSeconds:
+          type: integer
+        viewCount:
+          type: ["integer", "null"]
+        formats:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoFormat"
+      required:
+        - videoId
+        - title
+        - author
+        - thumbnailUrl
+        - durationSeconds
+        - formats
+    PlaylistVideo:
+      type: object
+      properties:
+        videoId:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        thumbnailUrl:
+          type: string
+        durationSeconds:
+          type: ["integer", "null"]
+        url:
+          type: string
+      required:
+        - videoId
+        - title
+        - author
+        - thumbnailUrl
+        - url
+    PlaylistInfo:
+      type: object
+      properties:
+        playlistId:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        videoCount:
+          type: integer
+        videos:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaylistVideo"
+      required:
+        - playlistId
+        - title
+        - author
+        - videoCount
+        - videos
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
