@@ -98,6 +98,11 @@ export function ytDlpDownloadArgs(): string[] {
   return args;
 }
 
+function ytDlpProxyArgs(): string[] {
+  const proxy = process.env.YTDLP_PROXY?.trim();
+  return proxy ? ["--proxy", proxy] : [];
+}
+
 function ytDlpExtractorArgs(): string[] {
   const args: string[] = [];
 
@@ -109,6 +114,8 @@ function ytDlpExtractorArgs(): string[] {
   if (process.env.YTDLP_FORCE_IPV4 === "true") {
     args.push("--force-ipv4");
   }
+
+  args.push(...ytDlpProxyArgs());
 
   return args;
 }
