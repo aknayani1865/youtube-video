@@ -106,10 +106,9 @@ function ytDlpProxyArgs(): string[] {
 function ytDlpExtractorArgs(): string[] {
   const args: string[] = [];
 
-  const extractorArgs = process.env.YTDLP_EXTRACTOR_ARGS?.trim();
-  if (extractorArgs) {
-    args.push("--extractor-args", extractorArgs);
-  }
+ const extractorArgs =
+    process.env.YTDLP_EXTRACTOR_ARGS?.trim() ?? "youtube:player_client=android,tv_embedded";
+  args.push("--extractor-args", extractorArgs);
 
   if (process.env.YTDLP_FORCE_IPV4 === "true") {
     args.push("--force-ipv4");

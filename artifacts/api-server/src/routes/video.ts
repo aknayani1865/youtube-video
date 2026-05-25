@@ -775,65 +775,96 @@ async function fetchFastVideoInfo(url: string): Promise<InternalVideoInfo | null
   const videoId = videoIdFromUrl(url);
   if (!videoId) return null;
 
-  const response = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      "user-agent": "com.google.android.youtube/20.10.38 (Linux; U; Android 12) gzip",
-    },
-    body: JSON.stringify({
-      context: {
-        client: {
-          clientName: "ANDROID",
-          clientVersion: "20.10.38",
-          hl: "en",
-          gl: "IN",
-          androidSdkVersion: 35,
+  const clients = [
+    {
+      body: {
+        context: {
+          client: {
+            clientName: "ANDROID",
+            clientVersion: "20.10.38",
+            hl: "en",
+            gl: "US",
+            androidSdkVersion: 35,
+          },
         },
+        videoId,
+        contentCheckOk: true,
+        racyCheckOk: true,
       },
-      videoId,
-      contentCheckOk: true,
-      racyCheckOk: true,
-    }),
-  });
+      userAgent: "com.google.android.youtube/20.10.38 (Linux; U; Android 12) gzip",
+    },
+    {
+      body: {
+        context: {
+          client: {
+            clientName: "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
+            clientVersion: "2.0",
+            hl: "en",
+            gl: "US",
+          },
+        },
+        videoId,
+        contentCheckOk: true,
+        racyCheckOk: true,
+      },
+      userAgent: "Mozilla/5.0 (SMART-TV; Linux; Tizen 6.0) AppleWebKit/538.1",
+    },
+  ];
 
-  if (!response.ok) return null;
+  for (const client of clients) {
+    try {
+      const response = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "user-agent": client.userAgent,
+        },
+        body: JSON.stringify(client.body),
+      });
 
-  const player = (await response.json()) as YoutubeiPlayerResponse;
-  if (player.playabilityStatus?.status !== "OK" || !player.videoDetails?.title) return null;
+      if (!response.ok) continue;
 
-  const sourceFormats = [
-    ...(player.streamingData?.formats ?? []),
-    ...(player.streamingData?.adaptiveFormats ?? []),
-  ]
-    .map(youtubeiFormatToYtDlpFormat)
-    .filter((format): format is YtDlpFormat => Boolean(format));
+      const player = (await response.json()) as YoutubeiPlayerResponse;
+      if (player.playabilityStatus?.status !== "OK" || !player.videoDetails?.title) continue;
 
-  if (sourceFormats.length === 0) return null;
+      const sourceFormats = [
+        ...(player.streamingData?.formats ?? []),
+        ...(player.streamingData?.adaptiveFormats ?? []),
+      ]
+        .map(youtubeiFormatToYtDlpFormat)
+        .filter((format): format is YtDlpFormat => Boolean(format));
 
-  const thumbnails = player.videoDetails.thumbnail?.thumbnails ?? [];
-  const thumbnail =
-    thumbnails
-      .filter((t) => t.url)
-      .sort((a, b) => (b.width ?? 0) - (a.width ?? 0))[0]?.url ?? "";
+      if (sourceFormats.length === 0) continue;
 
-  return {
-    videoId: player.videoDetails.videoId ?? videoId,
-    title: player.videoDetails.title,
-    author: player.videoDetails.author ?? "Unknown",
-    thumbnailUrl: thumbnail,
-    durationSeconds: Number(player.videoDetails.lengthSeconds ?? 0) || 0,
-    viewCount: player.videoDetails.viewCount ? Number(player.videoDetails.viewCount) : null,
-    formats: buildFormats({
-      id: player.videoDetails.videoId ?? videoId,
-      title: player.videoDetails.title,
-      uploader: player.videoDetails.author,
-      thumbnail,
-      duration: Number(player.videoDetails.lengthSeconds ?? 0) || 0,
-      view_count: player.videoDetails.viewCount ? Number(player.videoDetails.viewCount) : null,
-      formats: sourceFormats,
-    }),
-  };
+      const thumbnails = player.videoDetails.thumbnail?.thumbnails ?? [];
+      const thumbnail =
+        thumbnails
+          .filter((t) => t.url)
+          .sort((a, b) => (b.width ?? 0) - (a.width ?? 0))[0]?.url ?? "";
+
+      return {
+        videoId: player.videoDetails.videoId ?? videoId,
+        title: player.videoDetails.title,
+        author: player.videoDetails.author ?? "Unknown",
+        thumbnailUrl: thumbnail,
+        durationSeconds: Number(player.videoDetails.lengthSeconds ?? 0) || 0,
+        viewCount: player.videoDetails.viewCount ? Number(player.videoDetails.viewCount) : null,
+        formats: buildFormats({
+          id: player.videoDetails.videoId ?? videoId,
+          title: player.videoDetails.title,
+          uploader: player.videoDetails.author,
+          thumbnail,
+          duration: Number(player.videoDetails.lengthSeconds ?? 0) || 0,
+          view_count: player.videoDetails.viewCount ? Number(player.videoDetails.viewCount) : null,
+          formats: sourceFormats,
+        }),
+      };
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
 }
 
 async function getDirectDownloadUrl(url: string, itag: string): Promise<string | undefined> {
