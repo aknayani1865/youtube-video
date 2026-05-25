@@ -43,17 +43,17 @@ export function ytDlpAuthArgs(): string[] {
   return [];
 }
 
-export function ytDlpInfoArgs(): string[] {
-  const args: string[] = [];
+  export function ytDlpInfoArgs(): string[] {
+    const args: string[] = [];
 
-  if (process.env.YTDLP_INFO_CHECK_FORMATS !== "true") {
-    args.push("--no-check-formats");
+    if (process.env.YTDLP_INFO_CHECK_FORMATS !== "true") {
+      args.push("--no-check-formats");
+    }
+
+    args.push(...ytDlpExtractorArgs());
+
+    return args;
   }
-
-  args.push(...ytDlpExtractorArgs());
-
-  return args;
-}
 
 export function ytDlpDownloadArgs(): string[] {
   const args: string[] = [];
@@ -106,11 +106,9 @@ function ytDlpProxyArgs(): string[] {
 function ytDlpExtractorArgs(): string[] {
   const args: string[] = [];
 
- const extractorArgs =
-process.env.YTDLP_EXTRACTOR_ARGS?.trim() || null;
-if (extractorArgs) {
-  args.push("--extractor-args", extractorArgs);
-}
+const extractorArgs =
+  process.env.YTDLP_EXTRACTOR_ARGS?.trim() || "youtube:player_client=web";
+args.push("--extractor-args", extractorArgs);
   if (process.env.YTDLP_FORCE_IPV4 === "true") {
     args.push("--force-ipv4");
   }

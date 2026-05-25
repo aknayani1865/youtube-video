@@ -140,7 +140,7 @@ function hasPlausibleMediaFileSize(format: InternalVideoFormat, durationSeconds 
   if (!format.hasVideo || !format.hasAudio) return true;
 
   const minimumVideoBytes = durationSeconds >= 60 ? 1024 * 1024 : 128 * 1024;
-  return format.filesize >= minimumVideoBytes;
+return (format.filesize ?? 0) >= minimumVideoBytes;
 }
 
 function isSafeDirectDownloadFormat(
@@ -808,41 +808,41 @@ async function fetchFastVideoInfo(url: string): Promise<InternalVideoInfo | null
   const videoId = videoIdFromUrl(url);
   if (!videoId) return null;
 
-  const clients = [
-    {
-      body: {
-        context: {
-          client: {
-            clientName: "ANDROID",
-            clientVersion: "20.10.38",
-            hl: "en",
-            gl: "US",
-            androidSdkVersion: 35,
-          },
+ // ✅ REPLACE WITH — WEB client gets DASH formats
+const clients = [
+  {
+    body: {
+      context: {
+        client: {
+          clientName: "WEB",
+          clientVersion: "2.20240726.00.00",
+          hl: "en",
+          gl: "US",
         },
-        videoId,
-        contentCheckOk: true,
-        racyCheckOk: true,
       },
-      userAgent: "com.google.android.youtube/20.10.38 (Linux; U; Android 12) gzip",
+      videoId,
+      contentCheckOk: true,
+      racyCheckOk: true,
     },
-    {
-      body: {
-        context: {
-          client: {
-            clientName: "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
-            clientVersion: "2.0",
-            hl: "en",
-            gl: "US",
-          },
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  },
+  {
+    body: {
+      context: {
+        client: {
+          clientName: "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
+          clientVersion: "2.0",
+          hl: "en",
+          gl: "US",
         },
-        videoId,
-        contentCheckOk: true,
-        racyCheckOk: true,
       },
-      userAgent: "Mozilla/5.0 (SMART-TV; Linux; Tizen 6.0) AppleWebKit/538.1",
+      videoId,
+      contentCheckOk: true,
+      racyCheckOk: true,
     },
-  ];
+    userAgent: "Mozilla/5.0 (SMART-TV; Linux; Tizen 6.0) AppleWebKit/538.1",
+  },
+];
 
   for (const client of clients) {
     try {
