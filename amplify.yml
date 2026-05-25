@@ -7,8 +7,8 @@ applications:
           commands:
             - cd ../..
             - corepack enable
-            - corepack prepare pnpm@9.15.9 --activate
-            - pnpm install --frozen-lockfile
+            - corepack prepare pnpm@10.24.0 --activate
+            - pnpm install --frozen-lockfile --dangerously-allow-all-builds
         build:
           commands:
             - pnpm --filter @workspace/landing-site run build
