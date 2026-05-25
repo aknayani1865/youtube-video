@@ -126,14 +126,47 @@ const videoInfoCache = new Map<string, CacheEntry<InternalVideoInfo>>();
 const pendingVideoInfo = new Map<string, Promise<InternalVideoInfo>>();
 const prepareTasks = new Map<string, PrepareTask>();
 
-function hasCachedDirectUrls(info: InternalVideoInfo): boolean {
-  return info.formats.some((format) => !format.itag.includes("+") && Boolean(format.directUrl));
+function isProbablyStreamingPlaylistUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  return /(?:manifest|m3u8|mpd|playlist)/i.test(url);
+}
+
+function hasKnownFileSize(format: Pick<InternalVideoFormat, "filesize">): boolean {
+  return typeof format.filesize === "number" && Number.isFinite(format.filesize) && format.filesize > 0;
+}
+
+function hasPlausibleMediaFileSize(format: InternalVideoFormat, durationSeconds = 0): boolean {
+  if (!hasKnownFileSize(format)) return false;
+  if (!format.hasVideo || !format.hasAudio) return true;
+
+  const minimumVideoBytes = durationSeconds >= 60 ? 1024 * 1024 : 128 * 1024;
+  return format.filesize >= minimumVideoBytes;
+}
+
+function isSafeDirectDownloadFormat(
+  format: InternalVideoFormat,
+): format is InternalVideoFormat & { directUrl: string } {
+  return Boolean(format.directUrl) && hasKnownFileSize(format) && !isProbablyStreamingPlaylistUrl(format.directUrl);
+}
+
+function hasUsableCachedFormats(info: InternalVideoInfo): boolean {
+  return info.formats.some((format) => format.itag.includes("+") || isSafeDirectDownloadFormat(format));
+}
+
+function hasSafeFastVideoInfo(info: InternalVideoInfo): boolean {
+  const combinedFormats = info.formats.filter((format) => format.hasVideo && format.hasAudio);
+  if (combinedFormats.length === 0) return false;
+
+  return combinedFormats.every((format) => {
+    if (format.itag.includes("+")) return hasPlausibleMediaFileSize(format, info.durationSeconds);
+    return isSafeDirectDownloadFormat(format) && hasPlausibleMediaFileSize(format, info.durationSeconds);
+  });
 }
 
 function getCachedVideoInfo(url: string): InternalVideoInfo | null {
   const cached = videoInfoCache.get(url);
   if (!cached) return null;
-  if (cached.expiresAt <= Date.now() || !hasCachedDirectUrls(cached.value)) {
+  if (cached.expiresAt <= Date.now() || !hasUsableCachedFormats(cached.value)) {
     videoInfoCache.delete(url);
     return null;
   }
@@ -156,7 +189,7 @@ async function getDiskCachedVideoInfo(url: string): Promise<InternalVideoInfo | 
   try {
     const raw = await fs.readFile(videoInfoCachePath(url), "utf8");
     const cached = JSON.parse(raw) as CacheEntry<InternalVideoInfo>;
-    if (!cached.value || cached.expiresAt <= Date.now() || !hasCachedDirectUrls(cached.value)) return null;
+    if (!cached.value || cached.expiresAt <= Date.now() || !hasUsableCachedFormats(cached.value)) return null;
     setCachedVideoInfo(url, cached.value);
     return cached.value;
   } catch {
@@ -842,7 +875,7 @@ async function fetchFastVideoInfo(url: string): Promise<InternalVideoInfo | null
           .filter((t) => t.url)
           .sort((a, b) => (b.width ?? 0) - (a.width ?? 0))[0]?.url ?? "";
 
-      return {
+      const result = {
         videoId: player.videoDetails.videoId ?? videoId,
         title: player.videoDetails.title,
         author: player.videoDetails.author ?? "Unknown",
@@ -859,6 +892,9 @@ async function fetchFastVideoInfo(url: string): Promise<InternalVideoInfo | null
           formats: sourceFormats,
         }),
       };
+
+      if (!hasSafeFastVideoInfo(result)) continue;
+      return result;
     } catch {
       continue;
     }
@@ -869,14 +905,19 @@ async function fetchFastVideoInfo(url: string): Promise<InternalVideoInfo | null
 
 async function getDirectDownloadUrl(url: string, itag: string): Promise<string | undefined> {
   const cached = getCachedVideoInfo(url) ?? (await getDiskCachedVideoInfo(url));
-  return cached?.formats.find((format) => format.itag === itag)?.directUrl;
+  const format = cached?.formats.find((item) => item.itag === itag);
+  return format && cached && isSafeDirectDownloadFormat(format) && hasPlausibleMediaFileSize(format, cached.durationSeconds)
+    ? format.directUrl
+    : undefined;
 }
 
 async function getRequiredDirectDownloadUrl(url: string, itag: string): Promise<string> {
   const cached = getCachedVideoInfo(url) ?? (await getDiskCachedVideoInfo(url)) ?? (await fetchVideoInfo(url));
-  const directUrl = cached.formats.find((format) => format.itag === itag)?.directUrl;
-  if (!directUrl) throw new Error(`Could not create a direct stream URL for format ${itag}.`);
-  return directUrl;
+  const format = cached.formats.find((item) => item.itag === itag);
+  if (!format || !isSafeDirectDownloadFormat(format) || !hasPlausibleMediaFileSize(format, cached.durationSeconds)) {
+    throw new Error(`Could not create a direct stream URL for format ${itag}.`);
+  }
+  return format.directUrl;
 }
 
 async function getYtDlpStreamUrls(url: string, itag: string): Promise<{ videoUrl: string; audioUrl: string }> {

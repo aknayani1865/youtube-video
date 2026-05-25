@@ -6,8 +6,8 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#202126" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
     <meta name="application-name" content="vidssave" />
     <meta name="apple-mobile-web-app-title" content="vidssave" />
     <meta name="format-detection" content="telephone=no" />
@@ -63,12 +63,7 @@
             "name": "vidssave",
             "alternateName": "YouTube Video Downloader Online",
             "description": "vidssave opens a video downloader and format utility for checking video details and reviewing quality options.",
-            "inLanguage": "en-US",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://vidssave.online/?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
+            "inLanguage": "en-US"
           },
           {
             "@type": "WebPage",
@@ -159,108 +154,134 @@
         <a href="/contact.html">Contact</a>
       </div>
     </nav>
-    <main class="page-shell" id="main-content">
-      <section class="hero" aria-labelledby="page-title">
-        <a class="brand" href="/" aria-label="vidssave home">
-          <img class="site-logo hero-logo" src="/logo.svg" alt="vidssave" width="760" height="160" />
-        </a>
-
-        <p class="eyebrow">YouTube video downloader online</p>
-        <h1 id="page-title">Free YouTube Video Downloader and Playlist Downloader</h1>
-        <p class="subtitle">
-          Fast access to the full free YouTube video downloader and playlist downloader for YouTube to MP4, audio-only formats, HD quality options, and playlist ZIP downloads.
-        </p>
-
-        <a class="view-button" id="openDownloader" href="https://vidssave.shop" target="_blank" rel="noopener noreferrer" aria-label="Open the full vidssave downloader site">
-          <span>View Full Site</span>
-          <span class="button-icon" aria-hidden="true">&gt;</span>
-        </a>
-      </section>
-
-      <section class="share-panel" aria-label="Share vidssave">
-        <div>
-          <strong>Share vidssave</strong>
-          <span>with your friends</span>
+    <main class="page-shell home-shell" id="main-content">
+      <section class="hero-section" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Free YouTube video downloader online</p>
+          <h1 id="page-title"><span class="h1-line">Free YouTube</span><span class="h1-line">Video</span><span class="h1-line">Downloader</span></h1>
+          <p class="subtitle">
+            Learn what vidssave offers, compare the supported video, audio, HD, and playlist ZIP options, then open the dedicated downloader site when you are ready.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link hero-cta" id="openDownloader" href="https://vidssave.shop" target="_blank" rel="noopener noreferrer">
+              Open Downloader Site
+              <span aria-hidden="true">›</span>
+            </a>
+            <button id="shareSite" class="share-button" type="button">Share</button>
+          </div>
+          <div class="trust-strip" aria-label="vidssave highlights">
+            <span>MP4 formats</span>
+            <span>Playlist ZIP</span>
+            <span>Audio only</span>
+          </div>
         </div>
-        <button id="shareSite" class="share-button" type="button">Share</button>
+
+        <div class="product-preview" aria-label="Downloader interface preview">
+          <div class="preview-header">
+            <img src="/logo.svg" alt="" width="136" height="29" aria-hidden="true" />
+            <span>Landing preview</span>
+          </div>
+          <div class="preview-video">
+            <div class="preview-thumbnail">
+              <span class="play-dot">▶</span>
+            </div>
+            <div>
+              <strong>Open the downloader workspace</strong>
+              <p>This page explains the tool. Actual link extraction happens only on the downloader site.</p>
+            </div>
+          </div>
+          <div class="preview-list">
+            <div><span><b>MP4</b> 1080p and 720p formats</span><strong>Supported</strong></div>
+            <div><span><b>ZIP</b> playlist download options</span><strong>Supported</strong></div>
+            <div><span><b>M4A</b> audio-only choices</span><strong>Supported</strong></div>
+          </div>
+        </div>
       </section>
 
-      <section class="overview" aria-labelledby="overview-title">
-        <h2 id="overview-title">Free YouTube video, playlist, ZIP, and audio downloader</h2>
-        <p>
-          vidssave is built for users who want a free YouTube video downloader, YouTube playlist downloader, and simple video utility with a clean workflow: paste a video or playlist link, inspect metadata, compare formats, and open the full workspace when ready.
-        </p>
-        <p>
-          The full tool organizes formats into video plus audio, audio only, video only, and playlist ZIP download options so quality choices are easier to scan on desktop and mobile screens.
-        </p>
-        <p class="notice">
-          Use vidssave only for videos you own, videos in the public domain, or videos you have permission to download.
-        </p>
+      <section class="quick-tools" aria-labelledby="tools-title">
+        <div class="section-heading">
+          <p class="eyebrow">Built for quick decisions</p>
+          <h2 id="tools-title">One clean place for video, audio, and playlist options</h2>
+        </div>
+        <div class="tool-grid">
+          <article>
+            <span>01</span>
+            <h3>Video details</h3>
+            <p>Check title, thumbnail, duration, creator, and available qualities before choosing a format.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Playlist ZIP</h3>
+            <p>Open playlist links, scan videos, and choose ZIP quality such as best, 1080p, 720p, or audio only.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Audio formats</h3>
+            <p>Find audio-only options quickly when you only need a smaller M4A or WebM file.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="workflow-band" aria-labelledby="workflow-title">
+        <div class="section-heading">
+          <p class="eyebrow">Simple workflow</p>
+          <h2 id="workflow-title">How vidssave works</h2>
+        </div>
+        <ol class="steps-list">
+          <li><span>1</span> Open the full vidssave downloader.</li>
+          <li><span>2</span> Paste a YouTube video, Shorts, or playlist URL.</li>
+          <li><span>3</span> Review MP4, audio, HD, 4K, or playlist ZIP choices.</li>
+          <li><span>4</span> Download only content you own or have permission to save.</li>
+        </ol>
       </section>
 
       <section class="seo-hub" aria-labelledby="seo-hub-title">
-        <p class="eyebrow">Complete YouTube downloader guide</p>
-        <h2 id="seo-hub-title">Free YouTube Video Downloader for videos, playlists, MP4, audio, and ZIP files</h2>
-        <p class="hub-intro">
-          This page is a full guide for using vidssave as a YouTube video downloader online. It explains how to download YouTube videos, save a YouTube playlist as a ZIP file, check YouTube to MP4 quality, review audio-only options, and understand common video format choices before opening the full tool.
-        </p>
+        <div class="section-heading">
+          <p class="eyebrow">YouTube downloader guide</p>
+          <h2 id="seo-hub-title">Free YouTube Video Downloader for MP4, playlists, audio, and ZIP files</h2>
+          <p>
+            vidssave is built for users who want a free YouTube video downloader, YouTube playlist downloader, and simple video utility with a clean workflow: paste a video or playlist link, inspect metadata, compare formats, and open the full workspace when ready.
+          </p>
+        </div>
 
         <div class="hub-grid">
           <article id="youtube-to-mp4">
             <h3>YouTube to MP4 downloader</h3>
-            <p>vidssave helps users review available MP4 video options before downloading. A YouTube to MP4 downloader is useful when you want a common video format that works on phones, laptops, tablets, media players, and editing tools. The full site can show quality choices such as 144p, 240p, 360p, 480p, 720p, 1080p, 1440p, and 2160p when those formats are available from the source.</p>
-            <p>For many videos, YouTube separates high-resolution video from audio. vidssave shows video plus audio options where possible and can use merged formats for higher quality downloads. For merged HD or 4K downloads, the server may need ffmpeg so video and audio can be combined correctly.</p>
+            <p>Review available MP4 video options before downloading. The full site can show quality choices such as 144p, 240p, 360p, 480p, 720p, 1080p, 1440p, and 2160p when those formats are available from the source.</p>
           </article>
 
           <article id="playlist-downloader">
             <h3>YouTube playlist downloader ZIP</h3>
-            <p>The playlist downloader is built for users who want to download all videos from a supported YouTube playlist in one ZIP file. Paste a playlist URL or a normal watch URL that includes a list parameter, choose a quality option, and the downloader can package the playlist videos together.</p>
-            <p>Supported playlist quality choices include best quality, 2160p, 1440p, 1080p, 720p, 480p, 360p, 240p, 144p, and audio only. This gives users a clear way to choose between file size and video clarity before creating a ZIP archive.</p>
+            <p>Paste a playlist URL or a watch URL that includes a list parameter, choose a quality option, and package supported playlist videos together in a ZIP workflow.</p>
           </article>
 
           <article id="youtube-audio-downloader">
             <h3>YouTube audio downloader</h3>
-            <p>vidssave also supports audio-only workflows. A YouTube audio downloader is useful when a user wants to save only the audio track from content they own or have permission to use. The full tool can show audio formats with bitrate labels and containers such as M4A or WebM where available.</p>
-            <p>Audio-only files are usually smaller than full video downloads, making them easier to store, transfer, and play on mobile devices. The downloader interface separates audio choices from video choices so users can find them quickly.</p>
+            <p>Audio-only files are usually smaller than full video downloads. vidssave separates audio choices from video choices so users can find them quickly.</p>
           </article>
 
           <article id="download-youtube-shorts">
             <h3>Download YouTube Shorts</h3>
-            <p>Short video links can be checked in the same workflow as standard videos. Paste a supported Shorts link into the full site, review the metadata and available formats, then choose the quality that fits your needs.</p>
-            <p>Because Shorts can have different format availability from longer videos, vidssave reads the available source formats instead of assuming every resolution exists for every link.</p>
+            <p>Short video links can be checked in the same workflow as standard videos. Review the metadata and available formats, then choose the quality that fits your needs.</p>
           </article>
 
           <article id="video-quality-options">
-            <h3>HD and 4K video quality options</h3>
-            <p>Not every YouTube video has every quality. vidssave is designed to show available options based on the source video. If 1080p, 1440p, or 2160p is available, those qualities can appear in the format list or playlist ZIP selector. If only lower quality exists, the downloader will fall back to what the source provides.</p>
-            <p>Best quality is useful when users want the highest available result. Lower qualities such as 360p or 480p are useful when smaller file sizes matter more than resolution.</p>
-          </article>
-
-          <article id="how-to-download-youtube-playlist">
-            <h3>How to download a YouTube playlist</h3>
-            <ol>
-              <li>Open the full vidssave site.</li>
-              <li>Paste a YouTube playlist URL or a video URL that includes <code>list=</code>.</li>
-              <li>Wait for the playlist title and video list to load.</li>
-              <li>Select a ZIP quality such as best, 1080p, 720p, or audio only.</li>
-              <li>Click Download ZIP to package all playlist videos.</li>
-            </ol>
+            <h3>HD and 4K quality options</h3>
+            <p>Not every YouTube video has every quality. vidssave shows options based on the source video and falls back to the formats that are actually available.</p>
           </article>
 
           <article id="safe-use">
-            <h3>Responsible YouTube downloading</h3>
-            <p>vidssave should be used only for videos you own, videos in the public domain, or videos where you have permission from the rights holder. The site includes Terms, Privacy, Contact, and DMCA pages so users and rights holders can understand the intended use of the service.</p>
-          </article>
-
-          <article id="troubleshooting">
-            <h3>YouTube downloader troubleshooting</h3>
-            <p>If a video or playlist does not load, check that the URL is complete and supported. Some videos may require a signed-in browser session, some may restrict embedding or downloading, and high-quality merged downloads may require ffmpeg on the server. Playlist downloads can take longer because every video must be processed before or during ZIP creation.</p>
+            <h3>Responsible downloading</h3>
+            <p>Use vidssave only for videos you own, videos in the public domain, or videos where you have permission from the rights holder.</p>
           </article>
         </div>
       </section>
 
       <section class="internal-link-cloud" aria-labelledby="quick-links-title">
-        <h2 id="quick-links-title">Popular YouTube downloader searches</h2>
+        <div class="section-heading">
+          <p class="eyebrow">Popular searches</p>
+          <h2 id="quick-links-title">Find the right YouTube downloader page</h2>
+        </div>
         <div>
           <a href="/youtube-to-mp4.html">YouTube to MP4 downloader</a>
           <a href="/youtube-playlist-downloader.html">YouTube playlist downloader</a>
@@ -278,57 +299,26 @@
           <a href="/dmca.html">Copyright removal requests</a>
         </div>
       </section>
+
       <section class="seo-drawers" aria-labelledby="seo-title">
-        <h2 id="seo-title">More about vidssave</h2>
+        <div class="section-heading">
+          <p class="eyebrow">More details</p>
+          <h2 id="seo-title">Questions before using vidssave</h2>
+        </div>
 
         <details class="content-drawer">
-          <summary>vidssave features</summary>
-          <div class="feature-grid">
-            <article>
-              <h3>Video details</h3>
-              <p>Review title, creator, thumbnail, duration, and view information before opening the full downloader workflow.</p>
-            </article>
-            <article>
-              <h3>Quality options</h3>
-              <p>Compare available resolutions such as 360p, 720p, 1080p, and other formats returned by the video source.</p>
-            </article>
-            <article>
-              <h3>Audio and playlist formats</h3>
-              <p>Inspect audio-only choices, playlist ZIP download quality, bitrate labels, file containers, and estimated size where available.</p>
-            </article>
-            <article>
-              <h3>Clean interface</h3>
-              <p>Use a focused dark landing page with a direct route into the full vidssave tool.</p>
-            </article>
-          </div>
+          <summary>What does the full site show?</summary>
+          <p>The full site can show video metadata, thumbnails, duration, and available video or audio format groups.</p>
         </details>
 
         <details class="content-drawer">
-          <summary>How it works</summary>
-          <ol class="steps-list">
-            <li><span>1</span> Open the full vidssave site.</li>
-            <li><span>2</span> Paste a supported video or playlist URL.</li>
-            <li><span>3</span> Review video, playlist, audio, and ZIP quality options.</li>
-            <li><span>4</span> Use only content you own or have permission to save.</li>
-          </ol>
+          <summary>How do playlist downloads work?</summary>
+          <p>Playlist downloads can take longer because every video must be processed before or during ZIP creation.</p>
         </details>
 
         <details class="content-drawer">
-          <summary>Frequently asked questions</summary>
-          <div class="faq-list">
-            <details>
-              <summary>What is vidssave?</summary>
-              <p>It is the parent landing page for the vidssave video utility. The main button opens the full working site.</p>
-            </details>
-            <details>
-              <summary>What does the full site show?</summary>
-              <p>The full site can show video metadata, thumbnails, duration, and available video or audio format groups.</p>
-            </details>
-            <details>
-              <summary>What content should I use with vidssave?</summary>
-              <p>Use it only with content you own, content in the public domain, or content where you have permission from the rights holder.</p>
-            </details>
-          </div>
+          <summary>What content should I use with vidssave?</summary>
+          <p>Use it only with content you own, content in the public domain, or content where you have permission from the rights holder.</p>
         </details>
       </section>
     </main>
