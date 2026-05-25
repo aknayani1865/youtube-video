@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - corepack enable
+        - corepack prepare pnpm@latest --activate
+        - pnpm install --frozen-lockfile
+    build:
+      commands:
+        - pnpm --filter @workspace/landing-site run build
+  artifacts:
+    baseDirectory: artifacts/landing-site/dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .pnpm-store/**/*
