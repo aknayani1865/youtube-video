@@ -107,7 +107,7 @@ function ytDlpExtractorArgs(): string[] {
   const args: string[] = [];
 
  const extractorArgs =
-    process.env.YTDLP_EXTRACTOR_ARGS?.trim() ?? "youtube:player_client=android,tv_embedded";
+    process.env.YTDLP_EXTRACTOR_ARGS?.trim() ?? "youtube:player_client=default";
   args.push("--extractor-args", extractorArgs);
 
   if (process.env.YTDLP_FORCE_IPV4 === "true") {
