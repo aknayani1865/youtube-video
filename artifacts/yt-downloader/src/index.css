@@ -194,19 +194,6 @@
     cursor: not-allowed;
   }
 
-  .ad-slot {
-    display: block;
-    min-width: 0;
-    overflow: hidden;
-  }
-
-  .ad-slot-smartlink {
-    width: 100%;
-  }
-
-  .ad-slot:empty {
-    display: none;
-  }
 }
 
 @layer utilities {

@@ -3,7 +3,7 @@ import {
   Search, Youtube, Play, HardDrive, Music, Video,
   ArrowDownToLine, ShieldCheck, Zap, Clock, Eye,
   Sun, Moon, History, Star, X, Filter,
-  ListVideo, ChevronLeft, Users, Package,
+  ListVideo, ChevronLeft, Users, Package, ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ import { absoluteApiUrl, apiUrl } from "@/lib/api-base";
 
 const HISTORY_KEY = "vidssave-history";
 const MAX_HISTORY = 8;
+const SMARTLINK_URL = "https://heavenlysuspicious.com/jmt7hb54f5?key=9f34ad9e56c5178e25362e0df5c40833";
 
 function isPlaylistUrl(url: string): boolean {
   try {
@@ -719,6 +720,20 @@ export default function Home() {
           )}
         </AnimatePresence>
       </main>
+
+      <footer className="w-full border-t border-border/30 bg-background/80 px-4 py-4">
+        <div className="mx-auto flex w-full max-w-2xl items-center justify-center">
+          <a
+            href={SMARTLINK_URL}
+            target="_blank"
+            rel="nofollow sponsored noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-4 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+          >
+            Sponsored
+            <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        </div>
+      </footer>
 
       <AnimatePresence>
         {prepareDialog?.open && (
