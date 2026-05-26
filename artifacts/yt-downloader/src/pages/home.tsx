@@ -338,22 +338,30 @@ export default function Home() {
       try {
         const eventsUrl = await createVideoPrepareTask(dlUrl, itag, videoInfo?.title ?? "video");
         const events = new EventSource(eventsUrl);
-        const update = (event: MessageEvent) => {
-          const data = JSON.parse(event.data) as {
-            status: "running" | "success" | "error";
-            progress: number;
-            downloadUrl?: string;
-            error?: string;
-          };
-          setPrepareDialog((current) => current ? {
-            ...current,
-            status: data.status,
-            progress: data.progress,
-            downloadUrl: data.downloadUrl ? absoluteApiUrl(data.downloadUrl) : current.downloadUrl,
-            error: data.error ?? "",
-          } : current);
-          if (data.status !== "running") events.close();
-        };
+       const update = (event: MessageEvent) => {
+  const data = JSON.parse(event.data) as {
+    status: "running" | "success" | "error";
+    progress: number;
+    downloadUrl?: string;
+    error?: string;
+  };
+
+  setPrepareDialog((current) =>
+    current
+      ? {
+          ...current,
+          status: data.status,
+          progress: Math.max(current.progress, data.progress ?? 0),
+          downloadUrl: data.downloadUrl
+            ? absoluteApiUrl(data.downloadUrl)
+            : current.downloadUrl,
+          error: data.error ?? "",
+        }
+      : current,
+  );
+
+  if (data.status !== "running") events.close();
+};
 
         events.addEventListener("running", update);
         events.addEventListener("success", update);
@@ -776,9 +784,11 @@ export default function Home() {
                 {prepareDialog.status !== "success" && (
                   <div className="mt-4 h-3 rounded-full bg-background overflow-hidden border border-border/60">
                     <div
-                      className="h-full bg-primary transition-all duration-500"
-                      style={{ width: `${Math.max(4, prepareDialog.progress)}%` }}
-                    />
+  className="h-full bg-primary transition-all duration-500"
+ style={{
+  width: `${prepareDialog.progress === 0 ? 0 : Math.max(4, prepareDialog.progress)}%`,
+}}
+/>
                   </div>
                 )}
                 {prepareDialog.status === "running" && (
