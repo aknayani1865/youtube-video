@@ -185,6 +185,25 @@ function videoInfoCachePath(url: string): string {
   return path.join(VIDEO_INFO_CACHE_DIR, `${key}.json`);
 }
 
+function isStreamingProtocolUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  return /[?&](?:manifest|playlist)=|\.m3u8($|[?])|\.mpd($|[?])/i.test(url);
+}
+
+function isNativeCombinedFormat(fmt: YtDlpFormat): boolean {
+  return hasVideo(fmt) && hasAudio(fmt);
+}
+
+function isProgressiveDownloadFormat(fmt: YtDlpFormat): boolean {
+  return isNativeCombinedFormat(fmt) && !isStreamingProtocolUrl(fmt.url);
+}
+
+function mergedFilesize(video: YtDlpFormat, audio: YtDlpFormat): number | null {
+  const videoBytes = formatSize(video);
+  const audioBytes = formatSize(audio);
+  if (videoBytes && audioBytes) return videoBytes + audioBytes;
+  return null;
+}
 async function getDiskCachedVideoInfo(url: string): Promise<InternalVideoInfo | null> {
   try {
     const raw = await fs.readFile(videoInfoCachePath(url), "utf8");
@@ -387,9 +406,6 @@ function makeFormat(fmt: YtDlpFormat): InternalVideoFormat {
 }
 
 function makeMergedFormat(video: YtDlpFormat, audio: YtDlpFormat): InternalVideoFormat {
-  const videoBytes = formatSize(video) ?? 0;
-  const audioBytes = formatSize(audio) ?? 0;
-
   return {
     itag: `${video.format_id}+${audio.format_id}`,
     quality: video.format_id,
@@ -398,7 +414,7 @@ function makeMergedFormat(video: YtDlpFormat, audio: YtDlpFormat): InternalVideo
     hasAudio: true,
     hasVideo: true,
     container: "mp4",
-    filesize: videoBytes || audioBytes ? videoBytes + audioBytes : null,
+    filesize: mergedFilesize(video, audio),
   };
 }
 
@@ -416,16 +432,24 @@ function buildFormats(info: YtDlpInfo): InternalVideoFormat[] {
   const sourceFormats = info.formats.filter((fmt) => hasVideo(fmt) || hasAudio(fmt));
   const audio = bestAudioFormat(sourceFormats);
 
-  const existingCombined = sourceFormats
-    .filter((fmt) => hasVideo(fmt) && hasAudio(fmt))
+  const nativeCombined = sourceFormats
+    .filter((fmt) => isProgressiveDownloadFormat(fmt))
+    .sort((a, b) => formatScore(b) - formatScore(a))
     .map(makeFormat);
 
-  const existingCombinedQualities = new Set(existingCombined.map((fmt) => fmt.qualityLabel));
+  const nativeCombinedQualities = new Set(nativeCombined.map((fmt) => fmt.qualityLabel));
+
   const mergedCombined = audio
     ? sourceFormats
-        .filter((fmt) => isMp4Video(fmt) && !hasAudio(fmt) && !existingCombinedQualities.has(qualityLabel(fmt)))
+        .filter(
+          (fmt) =>
+            isMp4Video(fmt) &&
+            !hasAudio(fmt) &&
+            !nativeCombinedQualities.has(qualityLabel(fmt)),
+        )
         .sort((a, b) => formatScore(b) - formatScore(a))
         .map((fmt) => makeMergedFormat(fmt, audio))
+        .filter((fmt) => fmt.filesize !== null)
     : [];
 
   const audioOnly = sourceFormats
@@ -439,7 +463,7 @@ function buildFormats(info: YtDlpInfo): InternalVideoFormat[] {
     .map(makeFormat);
 
   return [
-    ...uniqueByQuality([...mergedCombined, ...existingCombined]).sort(
+    ...uniqueByQuality([...nativeCombined, ...mergedCombined]).sort(
       (a, b) => parseInt(b.qualityLabel, 10) - parseInt(a.qualityLabel, 10),
     ),
     ...audioOnly,
