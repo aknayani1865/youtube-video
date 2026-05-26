@@ -17,7 +17,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/components/theme-provider";
 import { absoluteApiUrl, apiUrl } from "@/lib/api-base";
-import { AdSlot, PageAdScripts } from "@/components/ads";
 
 // constants & helpers
 
@@ -423,7 +422,6 @@ export default function Home() {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col relative overflow-x-hidden">
-      <PageAdScripts />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[min(600px,100vw)] h-[260px] sm:h-[300px] bg-primary/8 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header */}
@@ -480,7 +478,6 @@ export default function Home() {
             </Button>
           </form>
 
-          <AdSlot type="smartlink" className="w-full max-w-xl" />
         </section>
 
         {/* Loader */}
