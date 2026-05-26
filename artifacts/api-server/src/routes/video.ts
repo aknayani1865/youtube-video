@@ -1109,8 +1109,9 @@ router.get("/video/prepare-download/events", (req, res) => {
   }
 
   res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Connection", "keep-alive");
+  res.setHeader("X-Accel-Buffering", "no");
   res.flushHeaders?.();
 
   const send = () => {
@@ -1118,21 +1119,32 @@ router.get("/video/prepare-download/events", (req, res) => {
       status: task.status,
       progress: Math.round(task.progress),
       error: task.error,
-      downloadUrl: task.status === "success" ? `/api/video/prepared-download?taskId=${encodeURIComponent(task.id)}` : "",
+      downloadUrl:
+        task.status === "success"
+          ? `/api/video/prepared-download?taskId=${encodeURIComponent(task.id)}`
+          : "",
     };
 
-    sendSse(res, task.status === "success" ? "success" : task.status === "error" ? "failed" : "running", payload);
+    sendSse(
+      res,
+      task.status === "success" ? "success" : task.status === "error" ? "failed" : "running",
+      payload,
+    );
+  };
 
+  const interval = setInterval(() => {
+    send();
     if (task.status !== "running") {
       clearInterval(interval);
       res.end();
     }
-  };
+  }, 1000);
 
-  const interval = setInterval(send, 1000);
   send();
 
-  req.on("close", () => clearInterval(interval));
+  req.on("close", () => {
+    clearInterval(interval);
+  });
 });
 
 router.get("/video/prepared-download", async (req, res) => {
