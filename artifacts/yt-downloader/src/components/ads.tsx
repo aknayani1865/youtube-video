@@ -5,9 +5,6 @@ type AdsConfig = {
   socialBarHtml?: string;
   smartlinkUrl?: string;
   smartlinkHtml?: string;
-  nativeBannerHtml?: string;
-  banner728x90Html?: string;
-  banner468x60Html?: string;
 };
 
 declare global {
@@ -66,13 +63,9 @@ export function PageAdScripts() {
   return null;
 }
 
-export function AdSlot({ type, className = "" }: { type: "banner728x90" | "banner468x60" | "nativeBanner" | "smartlink"; className?: string }) {
+export function AdSlot({ type, className = "" }: { type: "smartlink"; className?: string }) {
   const ads = getAdsConfig();
-  const html =
-    type === "banner728x90" ? ads.banner728x90Html :
-    type === "banner468x60" ? ads.banner468x60Html :
-    type === "nativeBanner" ? ads.nativeBannerHtml :
-    ads.smartlinkHtml;
+  const html = ads.smartlinkHtml;
   const ref = useAdHtml(html);
   const smartlinkUrl = type === "smartlink" ? ads.smartlinkUrl : "";
 

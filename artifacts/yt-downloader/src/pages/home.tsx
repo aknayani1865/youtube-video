@@ -446,8 +446,6 @@ export default function Home() {
         </div>
       </header>
 
-      <AdSlot type="banner728x90" className="mx-auto mt-4 w-full max-w-[728px] px-4" />
-
       <main className="flex-1 w-full max-w-2xl mx-auto px-4 py-8 sm:py-10 flex flex-col gap-7 sm:gap-8">
 
         {/* Hero + Search */}
@@ -482,11 +480,8 @@ export default function Home() {
             </Button>
           </form>
 
-          <AdSlot type="banner468x60" className="w-full max-w-[468px]" />
           <AdSlot type="smartlink" className="w-full max-w-xl" />
         </section>
-
-        <AdSlot type="nativeBanner" />
 
         {/* Loader */}
         <AnimatePresence>{isLoading && <ThreeDotLoader />}</AnimatePresence>
