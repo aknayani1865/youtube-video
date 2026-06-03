@@ -1,7 +1,7 @@
 {
-  "name": "vidssave YouTube Downloader",
+  "name": "vidssave - Free YouTube Video Downloader",
   "short_name": "vidssave",
-  "description": "YouTube video downloader and playlist downloader for reviewing MP4, audio, merged, and ZIP options.",
+  "description": "Free YouTube video downloader and playlist downloader for MP4, HD, audio, Shorts, merged video, and playlist ZIP options.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

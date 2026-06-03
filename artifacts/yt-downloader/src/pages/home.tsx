@@ -450,10 +450,10 @@ export default function Home() {
         {/* Hero + Search */}
         <section className="flex flex-col items-center text-center gap-5">
           <h1 className="text-[2.45rem] leading-[1.12] sm:text-5xl font-bold tracking-tight max-w-[12ch] sm:max-w-none">
-            Download <span className="text-primary">YouTube</span> Videos and Playlist
+            Free <span className="text-primary">YouTube</span> Video Downloader and Playlist Downloader
           </h1>
           <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
-            Paste a YouTube video or playlist link, pick video or audio quality, and download instantly.
+            Paste a YouTube video, Shorts, or playlist link, compare MP4, HD, audio, and ZIP options, then download permitted content instantly.
           </p>
 
           <form onSubmit={handleSubmit} data-testid="form-search" className="w-full mt-2 flex flex-col min-[460px]:flex-row gap-2">
